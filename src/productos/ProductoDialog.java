@@ -4,6 +4,11 @@
  */
 package productos;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.List;
+import java.util.ArrayList;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,16 +19,43 @@ public class ProductoDialog extends javax.swing.JDialog {
     private String producto;
     private int cantidad;
     private double precio;
+    private JComboBox<String> Listado;
+    
+    
     /**
      * Creates new form ProductoDialog
      */
     public ProductoDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        // Inicializar la lista de productos
+        List productos = new ArrayList();
+        productos.add("Ford Mustang");
+        productos.add("Chevrolet Camaro");
+        productos.add("Toyota Supra");
+        productos.add("Porsche 911");
+        productos.add("Audi R8");
+        productos.add("BMW M3");
+        productos.add("Mercedes-Benz AMG GT");
+        productos.add("Nissan GT-R");
+        productos.add("Subaru WRX STI");
+        productos.add("Honda Civic Type R");
+        
+        
+        Listado = new JComboBox((String[]) productos.toArray());
+        Listado.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                producto = (String) Listado.getSelectedItem();
+            }
+        });
+        // Establecer el producto predeterminado
+        producto = (String) Listado.getSelectedItem();
+       
     }
 
     public String getProducto() {
-        return txtProducto.getText();
+        return producto;
     }
 
     public int getCantidad() {
@@ -33,10 +65,7 @@ public class ProductoDialog extends javax.swing.JDialog {
     public double getPrecio() {
         return Double.parseDouble(txtPrecio.getText());
     }
-    public void setProducto(String producto) {
-    this.producto = producto;
-    txtProducto.setText(producto);
-    }
+    
 
     public void setCantidad(int cantidad) {
     this.cantidad = cantidad;
@@ -61,11 +90,11 @@ public class ProductoDialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtProducto = new javax.swing.JTextField();
         txtCantidad = new javax.swing.JTextField();
         txtPrecio = new javax.swing.JTextField();
         btnGurdar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        Listado = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Admin productos");
@@ -96,6 +125,8 @@ public class ProductoDialog extends javax.swing.JDialog {
             }
         });
 
+        Listado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -109,10 +140,10 @@ public class ProductoDialog extends javax.swing.JDialog {
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(54, 54, 54)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                            .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                            .addComponent(Listado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(53, 53, 53)
                         .addComponent(btnGurdar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -123,11 +154,11 @@ public class ProductoDialog extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                    .addComponent(Listado, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -158,7 +189,7 @@ public class ProductoDialog extends javax.swing.JDialog {
     private void btnGurdarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGurdarActionPerformed
 
         //TODO: 1. validar los campos para que acepten los valores correctos
-        String producto = txtProducto.getText();
+        String producto = (String) Listado.getSelectedItem();
         int cantidad;
         double precio;
 
@@ -177,17 +208,6 @@ public class ProductoDialog extends javax.swing.JDialog {
 
         }
 
-        if (producto.isEmpty()) {
-
-            JOptionPane.showMessageDialog(this,
-                    "El nombre de producto no puede ser vacio",
-                    "Producto incorrecto",
-                    JOptionPane.WARNING_MESSAGE
-            );
-
-            return;
-
-        }
 
         if (cantidad <= 0) {
 
@@ -268,6 +288,7 @@ public class ProductoDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> Listado;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGurdar;
     private javax.swing.JLabel jLabel1;
@@ -275,7 +296,6 @@ public class ProductoDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField txtCantidad;
     public javax.swing.JTextField txtPrecio;
-    private javax.swing.JTextField txtProducto;
     // End of variables declaration//GEN-END:variables
 
    

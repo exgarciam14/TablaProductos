@@ -268,7 +268,7 @@ public class CajaFacturacion extends javax.swing.JFrame {
 
     // Abrir el ProductoDialog y pre-llenar los campos
     ProductoDialog ventana = new ProductoDialog(this, true);
-    ventana.setProducto(producto);
+  
     ventana.setCantidad(cantidad);
     ventana.setPrecio(precio);
     ventana.setVisible(true);
